@@ -13,9 +13,9 @@
   margin: 10px;
 }
 
-.primary-grid div {
+.primary-grid div {  
   width: 60px;
-  height: 60px;  
+  height: 60px;    
 }
 
 .secondary-grid {
@@ -28,8 +28,7 @@
   margin: 10px;
 }
 
-.secondary-grid div {
-  border: solid;
+.secondary-grid div {  
   width: 40px;
   height: 40px;  
 }
