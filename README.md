@@ -18,22 +18,22 @@ Win Detection
 
 ### Front End
 
-[] 10x10 Ship Placement Grid
-[] 10x10 Shot Tracking Grid
-[] ship Represented
-[] different Sized Ships
-[] shot mechanic
-[] hit mechanic
-[] player Sink Mechanic
-[] opponent Sink Mechanic
-[] Win Loss Display
+[] 10x10 Ship Placement Grid  
+[] 10x10 Shot Tracking Grid  
+[] ship Represented  
+[] different Sized Ships  
+[] shot mechanic  
+[] hit mechanic  
+[] player Sink Mechanic  
+[] opponent Sink Mechanic  
+[] Win Loss Display  
 
 ### Back End
 
-[] API/Controllers
-[] build random ship placement
-[] game state table
-[] win detection
+[] API/Controllers  
+[] build random ship placement  
+[] game state table  
+[] win detection  
 
 ### Stretch Goals
 
