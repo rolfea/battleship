@@ -14,6 +14,11 @@ Client to Server Communication: Socket.IO
 ### TODO List
 
 [x] Define features for client and server in README  
-[] Build out basic client  
-  [] build primary/secondary grids
-  [] static placement of ships for UI testing
+[x] Build out basic client  
+  [x] build primary/secondary grids
+  [x] static placement of ships for UI testing
+  [x] shot tracker
+
+## Next Steps
+
+Basic UI is established, and I think rather than going farther into game logic, I will start to look at the server work. I don't want to get too far into a POC version UI, and I want to solve some things with the API that I anticipate next. 

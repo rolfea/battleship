@@ -20,9 +20,9 @@ Win Detection
 
 [x] 10x10 Ship Placement Grid  
 [x] 10x10 Shot Tracking Grid  
-[] ship Represented  
-[] different Sized Ships  
-[] shot mechanic  
+[x] ship Represented  
+[x] different Sized Ships  
+[x] shot mechanic  
 [] hit mechanic  
 [] player Sink Mechanic  
 [] opponent Sink Mechanic  
