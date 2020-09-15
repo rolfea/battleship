@@ -18,19 +18,21 @@ Win Detection
 
 ### Front End
 
-[] 10x10 Ship Placement Grid  
-[] 10x10 Shot Tracking Grid  
-[] ship Represented  
-[] different Sized Ships  
-[] shot mechanic  
+[x] 10x10 Ship Placement Grid  
+[x] 10x10 Shot Tracking Grid  
+[x] ship Represented  
+[x] different Sized Ships  
+[x] shot mechanic  
 [] hit mechanic  
 [] player Sink Mechanic  
 [] opponent Sink Mechanic  
-[] Win Loss Display  
+[] Win/Loss Display  
+[] Whose Turn Is It (logic/display)  
 
 ### Back End
 
 [] API/Controllers  
+[] start game  
 [] build random ship placement  
 [] game state table  
 [] win detection  
@@ -39,6 +41,8 @@ Win Detection
 
 * Deploy to AWS (Build, Test, Deploy)
 * Beautiful UI/UX (sounds, colors, effects)
+* Browser Compatibility
+* Responsive Design
 
 ### Out of Scope (for now)
 
@@ -48,3 +52,7 @@ Win Detection
 * Custom ship placement
 * Play against computer
 * Player Chat
+
+## Reference
+
+These are things I referred to while I worked on this.
