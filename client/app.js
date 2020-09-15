@@ -31,19 +31,38 @@ const CONSTANTS = {
 };
 
 let STATE = {
-  turn: '1'
-  ,
+  turn: 'player' // player/enemy
+  , winnder: false
 };
 
-function fillGrid(x, y, gridClass) {
-  let grid = getGrid(gridClass);  
+function fillGrids() {
+  fillPrimaryGrid();
+  fillSecondaryGrid();
+}
+
+function fillPrimaryGrid() {
+  let grid = getGrid(CONSTANTS.primaryGridSelector);  
   let squares = [];
   
-  for (let i = 0; i < (x * y); i++) {
+  for (let i = 0; i < 100; i++) {
     squares.push(buildGridSquare());
   }
 
   squares.forEach((square) => grid.appendChild(square));
+}
+
+function fillSecondaryGrid() {
+  let grid = getGrid(CONSTANTS.secondaryGridSelector);  
+  let squares = [];
+  
+  for (let i = 0; i < 100; i++) {
+    squares.push(buildGridSquare());
+  }
+
+  squares.forEach((square) => {
+    square.addEventListener('click', attackEnemy);
+    grid.appendChild(square);
+  });
 }
 
 function getGrid(gridClass) {
@@ -63,11 +82,19 @@ function placeShips(ships) {
   ships.forEach( ship => placeShip(ship));
 }
 
-function main() {
-  fillGrid(10, 10, CONSTANTS.primaryGridSelector);
-  fillGrid(10, 10, CONSTANTS.secondaryGridSelector);
+function attackEnemy(event) {
+  if (STATE.turn === 'player') {
+    event.target.style = 'background-color: red';    
+  }
+}
 
+function initGame() {
+  fillGrids();
   placeShips(CONSTANTS.staticShips);
+}
+
+function main() {
+  initGame()
 }
 
 window.addEventListener('load', () =>  main());
