@@ -28,6 +28,7 @@ const CONSTANTS = {
       color: 'yellow'
     },
   ]
+  , socket: io()
 };
 
 let STATE = {
