@@ -1,6 +1,8 @@
 const CONSTANTS = {
   primaryGridSelector: '.primary-grid'
   , secondaryGridSelector: '.secondary-grid'
+  , playerConnectButton: '#connect'
+  , playerReadyButton: '#ready-to-play'
   , staticShips: [
     {
       name: 'carrier',
@@ -28,14 +30,9 @@ const CONSTANTS = {
       color: 'yellow'
     },
   ]
-  , socket: io()
 };
 
-let STATE = {
-  turn: 'player' // player/enemy
-  , winner: false
-  , playerNumber: -1
-};
+let playerNumber;
 
 function fillGrids() {
   fillPrimaryGrid();
@@ -84,31 +81,43 @@ function placeShips(ships) {
   ships.forEach( ship => placeShip(ship));
 }
 
-function attackEnemy(event) {
+function attackEnemy(event, STATE) {
   if (STATE.turn === 'player') {
     event.target.style = 'background-color: red';    
   }
 }
 
-function initGame() {
-  fillGrids();
-  placeShips(CONSTANTS.staticShips);
+function connectPlayer() {
+  const socket = io();
 
-  CONSTANTS.socket.on('playerNumber', num => {
+  socket.on('playerNumber', num => {
     if (num === -1) {
       console.log('There are already 2 players. Try again later.');
     } else {
-      STATE.playerNumber = parseInt(num);    
+      playerNumber = parseInt(num);  
     }    
   });
 
-  CONSTANTS.socket.on('playerConnected', num => {
+  socket.on('playerConnected', num => {
     console.log(`Player ${num} just connected!`);
-  })
+  });
   
-  CONSTANTS.socket.on('playerDisconnected', num => {
+  socket.on('playerDisconnected', num => {
     console.log(`Player ${num} just disconnected!`);
-  })
+  });
+
+}
+
+function readyToPlay() {
+
+}
+
+function initGame() {
+  document.querySelector(CONSTANTS.playerConnectButton).addEventListener('click', connectPlayer);
+  document.querySelector(CONSTANTS.playerReadyButton).addEventListener('click', readyToPlay);
+  fillGrids();
+  placeShips(CONSTANTS.staticShips);
+
 }
 
 function main() {

@@ -12,16 +12,24 @@ server.on('error', () => console.log('an error!'));
 server.listen(PORT, () => console.log(`Server Started on ${PORT}`));
 const io = socketio(server);
 
-// socket connection
+// GAME STATE
+// temporarily handle in memory, but we want to persist this in the DB eventually
 
-const playerConnections = [null, null]; // only two players can connect
+let STATE = {
+  turn: 'player' // player/enemy
+  , winner: false
+  , playerConnections: [null, null]
+  , playersReady: [null, null]
+};
+
+// SOCKET CONNECTION
 
 io.on('connection', (socket) => {  
   let playerIndex = -1;
-  for (const i in playerConnections) {
-    if (playerConnections[i] === null) {
+  for (const i in STATE.playerConnections) {
+    if (STATE.playerConnections[i] === null) {
       playerIndex = i;
-      playerConnections[i] = i;
+      STATE.playerConnections[i] = i;
       console.log(`Player ${playerIndex} has connected`);
       break;
     }
@@ -40,7 +48,7 @@ io.on('connection', (socket) => {
   //notify of player disconnection
   socket.on('disconnect', () => {
     console.log(`Player ${playerIndex} has disconnected`);
-    playerConnections[playerIndex] = null; 
+    STATE.playerConnections[playerIndex] = null; 
     socket.broadcast.emit('playerDisconnected', playerIndex);
   })
 });
