@@ -33,7 +33,8 @@ const CONSTANTS = {
 
 let STATE = {
   turn: 'player' // player/enemy
-  , winnder: false
+  , winner: false
+  , playerNumber: -1
 };
 
 function fillGrids() {
@@ -92,7 +93,22 @@ function attackEnemy(event) {
 function initGame() {
   fillGrids();
   placeShips(CONSTANTS.staticShips);
-  CONSTANTS.socket.on('playerNumber', console.log);
+
+  CONSTANTS.socket.on('playerNumber', num => {
+    if (num === -1) {
+      console.log('There are already 2 players. Try again later.');
+    } else {
+      STATE.playerNumber = parseInt(num);    
+    }    
+  });
+
+  CONSTANTS.socket.on('playerConnected', num => {
+    console.log(`Player ${num} just connected!`);
+  })
+  
+  CONSTANTS.socket.on('playerDisconnected', num => {
+    console.log(`Player ${num} just disconnected!`);
+  })
 }
 
 function main() {

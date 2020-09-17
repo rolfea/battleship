@@ -18,21 +18,30 @@ const playerConnections = [null, null]; // only two players can connect
 
 io.on('connection', (socket) => {  
   let playerIndex = -1;
-  for (const i in playerConnections) { // pull to separate function?
+  for (const i in playerConnections) {
     if (playerConnections[i] === null) {
       playerIndex = i;
       playerConnections[i] = i;
+      console.log(`Player ${playerIndex} has connected`);
       break;
     }
   } 
 
-  if (playerIndex === -1) {
-    return;
-  }
-
   // Identify player number to client
   socket.emit('playerNumber', playerIndex);
 
-  console.log(`Player ${playerIndex} has connected`)
+  if (playerIndex === -1) {
+     return;
+  }
+
+  // notify of player connection
+  socket.broadcast.emit('playerConnected', playerIndex);
+  
+  //notify of player disconnection
+  socket.on('disconnect', () => {
+    console.log(`Player ${playerIndex} has disconnected`);
+    playerConnections[playerIndex] = null; 
+    socket.broadcast.emit('playerDisconnected', playerIndex);
+  })
 });
  
