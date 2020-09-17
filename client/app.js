@@ -87,9 +87,7 @@ function attackEnemy(event, STATE) {
   }
 }
 
-function connectPlayer() {
-  const socket = io();
-
+function connectPlayer(socket) {
   socket.on('playerNumber', num => {
     if (num === -1) {
       console.log('There are already 2 players. Try again later.');
@@ -105,23 +103,27 @@ function connectPlayer() {
   socket.on('playerDisconnected', num => {
     console.log(`Player ${num} just disconnected!`);
   });
-
 }
 
-function readyToPlay() {
-
+function readyToPlay(socket) {
+  socket.emit('playerReady', playerNumber);
 }
 
 function initGame() {
-  document.querySelector(CONSTANTS.playerConnectButton).addEventListener('click', connectPlayer);
-  document.querySelector(CONSTANTS.playerReadyButton).addEventListener('click', readyToPlay);
+  const socket = io();
+
+  connectPlayer(socket);
+
+  document.querySelector(CONSTANTS.playerReadyButton).addEventListener('click', () => readyToPlay(socket));
+  
+  //these will receive game state and fill for both players
   fillGrids();
   placeShips(CONSTANTS.staticShips);
 
 }
 
 function main() {
-  initGame()
+  document.querySelector(CONSTANTS.playerConnectButton).addEventListener('click', initGame);
 }
 
 window.addEventListener('load', () =>  main());

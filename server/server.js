@@ -29,8 +29,9 @@ io.on('connection', (socket) => {
   for (const i in STATE.playerConnections) {
     if (STATE.playerConnections[i] === null) {
       playerIndex = i;
-      STATE.playerConnections[i] = i;
+      STATE.playerConnections[i] = true;
       console.log(`Player ${playerIndex} has connected`);
+      logState(STATE);      
       break;
     }
   } 
@@ -50,6 +51,15 @@ io.on('connection', (socket) => {
     console.log(`Player ${playerIndex} has disconnected`);
     STATE.playerConnections[playerIndex] = null; 
     socket.broadcast.emit('playerDisconnected', playerIndex);
+  });
+
+  socket.on('playerReady', (num) => {
+    STATE.playersReady[num] = true;
+    console.log(`Player ${num} is ready to play.`);
+    logState(STATE);
   })
 });
  
+function logState(state) {
+  console.log(`STATE is now ${JSON.stringify(state)}`);
+}
