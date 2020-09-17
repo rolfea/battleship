@@ -10,7 +10,7 @@ Today I want to scaffold out the back end and get it talking to the front end. I
 [] set up DB and DB communication layer
 [x] set up socket.io messaging
 [x] establish communication between server and front end
-[] both players ready
+[x] both players ready
 [] deliver initial game state after both players ready
 
 ## 9/14/2020

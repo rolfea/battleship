@@ -87,7 +87,7 @@ function attackEnemy(event, STATE) {
   }
 }
 
-function connectPlayer(socket) {
+function tryConnectPlayer(socket) {
   socket.on('playerNumber', num => {
     if (num === -1) {
       console.log('There are already 2 players. Try again later.');
@@ -111,10 +111,10 @@ function readyToPlay(socket) {
 
 function initGame() {
   const socket = io();
-
-  connectPlayer(socket);
-
-  document.querySelector(CONSTANTS.playerReadyButton).addEventListener('click', () => readyToPlay(socket));
+  document.querySelector(CONSTANTS.playerReadyButton)
+          .addEventListener('click', () => readyToPlay(socket));
+  
+  tryConnectPlayer(socket);
   
   //these will receive game state and fill for both players
   fillGrids();

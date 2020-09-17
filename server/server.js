@@ -53,10 +53,13 @@ io.on('connection', (socket) => {
     socket.broadcast.emit('playerDisconnected', playerIndex);
   });
 
+  //handle playerReady
   socket.on('playerReady', (num) => {
     STATE.playersReady[num] = true;
     console.log(`Player ${num} is ready to play.`);
     logState(STATE);
+
+    // generate player ships
   })
 });
  
