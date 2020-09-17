@@ -23,7 +23,7 @@ Win Detection
 [x] ship Represented  
 [x] different Sized Ships  
 [x] shot mechanic  
-[] hit mechanic  
+[] hit vs miss mechanic  
 [] player Sink Mechanic  
 [] opponent Sink Mechanic  
 [] Win/Loss Display  
