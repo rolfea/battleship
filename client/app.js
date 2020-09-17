@@ -92,6 +92,7 @@ function attackEnemy(event) {
 function initGame() {
   fillGrids();
   placeShips(CONSTANTS.staticShips);
+  CONSTANTS.socket.on('playerNumber', console.log);
 }
 
 function main() {

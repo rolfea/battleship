@@ -1,26 +1,38 @@
 const http = require('http');
 const express = require('express');
 const socketio = require('socket.io');
-
+const PORT = process.env.PORT || 8080
 const app = express();
 const clientPath = `${__dirname}/../client`;
-console.log(`Client Path is ${clientPath}`)
-app.use(express.static(clientPath));
 
+app.use(express.static(clientPath));
 const server = http.createServer(app);
 
+server.on('error', () => console.log('an error!'));
+server.listen(PORT, () => console.log(`Server Started on ${PORT}`));
 const io = socketio(server);
 
-io.on('connection', (socket) => {
-  console.log('connection started');
-  socket.emit('message', 'Connection successful');
-});
+// socket connection
 
-server.on('error', () => {
-  console.log('an error!');
-});
+const playerConnections = [null, null]; // only two players can connect
 
-server.listen(8080, () => {
-  console.log('TEST - Started Server on 8080');
-});
+io.on('connection', (socket) => {  
+  let playerIndex = -1;
+  for (const i in playerConnections) { // pull to separate function?
+    if (playerConnections[i] === null) {
+      playerIndex = i;
+      playerConnections[i] = i;
+      break;
+    }
+  } 
 
+  if (playerIndex === -1) {
+    return;
+  }
+
+  // Identify player number to client
+  socket.emit('playerNumber', playerIndex);
+
+  console.log(`Player ${playerIndex} has connected`)
+});
+ 
