@@ -3,36 +3,11 @@ const CONSTANTS = {
   , secondaryGridSelector: '.secondary-grid'
   , playerConnectButton: '#connect'
   , playerReadyButton: '#ready-to-play'
-  , staticShips: [
-    {
-      name: 'carrier',
-      positions: [0, 1, 2, 3, 4],
-      color: 'black'
-    },
-    {
-      name: 'battleship',
-      positions: [45, 46, 47, 48],
-      color: 'orange'
-    },
-    {
-      name: 'destroyer',
-      positions: [10, 20, 30],
-      color: 'pink'
-    },
-    {
-      name: 'submarine',
-      positions: [33, 43, 53],
-      color: 'tomato'
-    },
-    {
-      name: 'patrol boat',
-      positions: [99, 98],
-      color: 'yellow'
-    },
-  ]
+  , playerNumber: '#player-number'
 };
 
 let playerNumber;
+let clientState;
 
 function fillGrids() {
   fillPrimaryGrid();
@@ -78,7 +53,8 @@ function placeShip(ship) {
 }
 
 function placeShips(ships) {
-  ships.forEach( ship => placeShip(ship));
+  ships.find(s => s.playerId === playerNumber).shipLocations
+       .forEach(ship => placeShip(ship));
 }
 
 function attackEnemy(event, STATE) {
@@ -93,11 +69,12 @@ function tryConnectPlayer(socket) {
       console.log('There are already 2 players. Try again later.');
     } else {
       playerNumber = parseInt(num);  
+      document.querySelector(CONSTANTS.playerNumber).innerText += ` ${playerNumber + 1}`;
     }    
   });
 
   socket.on('playerConnected', num => {
-    console.log(`Player ${num} just connected!`);
+    console.log(`Player ${num} just connected!`);    
   });
   
   socket.on('playerDisconnected', num => {
@@ -111,14 +88,20 @@ function readyToPlay(socket) {
 
 function initGame() {
   const socket = io();
+  socket.on('STATE', STATE => {
+    clientState = STATE;
+    console.log('Updating state from server:');
+    console.log(JSON.stringify(clientState));
+    fillGrids();
+    placeShips(clientState.ships);
+  });
+  
   document.querySelector(CONSTANTS.playerReadyButton)
           .addEventListener('click', () => readyToPlay(socket));
   
-  tryConnectPlayer(socket);
+  tryConnectPlayer(socket);  
   
-  //these will receive game state and fill for both players
-  fillGrids();
-  placeShips(CONSTANTS.staticShips);
+  
 
 }
 

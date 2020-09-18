@@ -20,6 +20,68 @@ let STATE = {
   , winner: false
   , playerConnections: [null, null]
   , playersReady: [null, null]
+  , ships: [
+    { 
+      playerId: 0
+      , shipLocations: [
+        {
+          name: 'carrier',
+          positions: [0, 1, 2, 3, 4],
+          color: 'black'
+        },
+        {
+          name: 'battleship',
+          positions: [45, 46, 47, 48],
+          color: 'orange'
+        },
+        {
+          name: 'destroyer',
+          positions: [10, 20, 30],
+          color: 'pink'
+        },
+        {
+          name: 'submarine',
+          positions: [33, 43, 53],
+          color: 'tomato'
+        },
+        {
+          name: 'patrol boat',
+          positions: [99, 98],
+          color: 'yellow'
+        }
+      ] 
+    }
+    , { 
+      playerId: 1
+      , shipLocations: [
+        {
+          name: 'carrier',
+          positions: [0, 10, 20, 30, 40],
+          color: 'black'
+        },
+        {
+          name: 'battleship',
+          positions: [46, 36, 26, 16],
+          color: 'orange'
+        },
+        {
+          name: 'destroyer',
+          positions: [11, 21, 31],
+          color: 'pink'
+        },
+        {
+          name: 'submarine',
+          positions: [33, 34, 35],
+          color: 'tomato'
+        },
+        {
+          name: 'patrol boat',
+          positions: [9, 8],
+          color: 'yellow'
+        }
+      ] 
+    }
+  ]
 };
 
 // SOCKET CONNECTION
@@ -59,7 +121,15 @@ io.on('connection', (socket) => {
     console.log(`Player ${num} is ready to play.`);
     logState(STATE);
 
-    // generate player ships
+    // both players ready?
+    if (STATE.playersReady.every(e => e)) {
+      // generate player ships
+
+      // send to client
+      socket.emit('STATE', STATE);
+      console.log('Both players ready. Sending STATE to client.')
+      logState(STATE);
+    }    
   })
 });
  
