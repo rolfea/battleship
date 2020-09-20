@@ -3,8 +3,8 @@ const CONSTANTS = {
   , secondaryGridSelector: '.secondary-grid'
   , playerConnectButton: '#connect'
   , playerReadyButton: '#ready-to-play'
-  , playerNumber: '#player-number'
-  , playerTurn: '#player-turn'
+  , playerNumberDisplay: '#player-number'
+  , playerTurnDisplay: '#player-turn'
 };
 
 let playerNumber;
@@ -20,7 +20,7 @@ function fillPrimaryGrid() {
   let squares = [];
   
   for (let i = 0; i < 100; i++) {
-    squares.push(buildGridSquare());
+    squares.push(buildGridSquare(i, 'primary'));
   }
 
   squares.forEach((square) => grid.appendChild(square));
@@ -31,7 +31,7 @@ function fillSecondaryGrid(socket) {
   let squares = [];
   
   for (let i = 0; i < 100; i++) {
-    squares.push(buildGridSquare());
+    squares.push(buildGridSquare(i, 'secondary'));
   }
 
   squares.forEach((square) => {
@@ -44,8 +44,10 @@ function getGrid(gridClass) {
   return document.querySelector(gridClass);
 }
 
-function buildGridSquare() {
-  return document.createElement('div');
+function buildGridSquare(id, parentGrid) {
+  const square = document.createElement('div');
+  square.setAttribute('id', `player-${playerNumber}-${parentGrid}-grid-${id}`);
+  return square;
 }
 
 function placeShip(ship) {
@@ -76,7 +78,7 @@ function tryConnectPlayer(socket) {
       console.log('There are already 2 players. Try again later.');
     } else {
       playerNumber = parseInt(num);  
-      document.querySelector(CONSTANTS.playerNumber).innerText += ` ${playerNumber + 1}`;
+      document.querySelector(CONSTANTS.playerNumberDisplay).innerText += ` ${playerNumber + 1}`;
     }    
   });
 
@@ -94,7 +96,7 @@ function readyToPlay(socket) {
 }
 
 function updatePlayerTurn() {
-  document.querySelector(CONSTANTS.playerTurn).innerText = `Player Turn: ${clientState.playerTurn + 1}`
+  document.querySelector(CONSTANTS.playerTurnDisplay).innerText = `Player Turn: ${clientState.playerTurn + 1}`
 }
 
 function updateGameState(state) {
