@@ -16,10 +16,10 @@ const io = socketio(server);
 // temporarily handle in memory, but we want to persist this in the DB eventually
 
 let STATE = {
-  turn: 'player' // player/enemy
-  , winner: false
+  winner: false
   , playerConnections: [null, null]
   , playersReady: [null, null]
+  , playerTurn: 0
   , ships: [
     { 
       playerId: 0
@@ -93,7 +93,6 @@ io.on('connection', (socket) => {
       playerIndex = i;
       STATE.playerConnections[i] = true;
       console.log(`Player ${playerIndex} has connected`);
-      logState(STATE);      
       break;
     }
   } 
@@ -118,19 +117,21 @@ io.on('connection', (socket) => {
   //handle playerReady
   socket.on('playerReady', (num) => {
     STATE.playersReady[num] = true;
-    console.log(`Player ${num} is ready to play.`);
-    logState(STATE);
+    console.log(`Player ${num} is ready to play.`, STATE);
 
     // both players ready?
     if (STATE.playersReady.every(e => e)) {
-      // generate player ships
+      socket.emit('initState', STATE);
+      console.log('Both players ready. Sending STATE to client.')    
+    }      
+  });
 
-      // send to client
-      socket.emit('STATE', STATE);
-      console.log('Both players ready. Sending STATE to client.')
-      logState(STATE);
-    }    
-  })
+  socket.on('attack', (targetId) => {
+    console.log('attack recieved!')
+    STATE.playerTurn = STATE.playerTurn === 0 ? 1 : 0;
+    io.emit('updateState', STATE);
+    logState(STATE);
+  });
 });
  
 function logState(state) {
