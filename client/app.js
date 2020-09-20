@@ -4,14 +4,15 @@ const CONSTANTS = {
   , playerConnectButton: '#connect'
   , playerReadyButton: '#ready-to-play'
   , playerNumber: '#player-number'
+  , playerTurn: '#player-turn'
 };
 
 let playerNumber;
 let clientState;
 
-function fillGrids() {
+function fillGrids(socket) {
   fillPrimaryGrid();
-  fillSecondaryGrid();
+  fillSecondaryGrid(socket);
 }
 
 function fillPrimaryGrid() {
@@ -25,7 +26,7 @@ function fillPrimaryGrid() {
   squares.forEach((square) => grid.appendChild(square));
 }
 
-function fillSecondaryGrid() {
+function fillSecondaryGrid(socket) {
   let grid = getGrid(CONSTANTS.secondaryGridSelector);  
   let squares = [];
   
@@ -34,7 +35,7 @@ function fillSecondaryGrid() {
   }
 
   squares.forEach((square) => {
-    square.addEventListener('click', attackEnemy);
+    square.addEventListener('click', (event) => attackEnemy(event, socket));
     grid.appendChild(square);
   });
 }
@@ -57,10 +58,17 @@ function placeShips(ships) {
        .forEach(ship => placeShip(ship));
 }
 
-function attackEnemy(event, STATE) {
-  if (STATE.turn === 'player') {
+function attackEnemy(event, socket) {  
+  if (clientState.playerTurn === playerNumber) {
+    console.log(`player ${playerNumber} attacks ${event.target.id}!`);
+    // check other player's ship array for hit
     event.target.style = 'background-color: red';    
-  }
+    socket.emit('attack', event.target.id);
+    console.log(clientState);  
+  } else {
+    console.log('not your turn!');
+  } 
+  
 }
 
 function tryConnectPlayer(socket) {
@@ -86,23 +94,30 @@ function readyToPlay(socket) {
   socket.emit('playerReady', playerNumber);
 }
 
+function updateState(state) {
+  clientState = state;
+  console.log('Updating state from the server:', clientState);
+}
+
 function initGame() {
   const socket = io();
-  socket.on('STATE', STATE => {
+  socket.on('initState', STATE => {
     clientState = STATE;
-    console.log('Updating state from server:');
-    console.log(JSON.stringify(clientState));
-    fillGrids();
+    console.log('Getting initial state from server:');
+
+    fillGrids(socket);
     placeShips(clientState.ships);
+  });
+
+  // listen for any subsequent updates to state from the server
+  socket.on('updateState', STATE => {
+    updateState(STATE);
   });
   
   document.querySelector(CONSTANTS.playerReadyButton)
           .addEventListener('click', () => readyToPlay(socket));
   
   tryConnectPlayer(socket);  
-  
-  
-
 }
 
 function main() {
