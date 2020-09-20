@@ -67,8 +67,7 @@ function attackEnemy(event, socket) {
     console.log(clientState);  
   } else {
     console.log('not your turn!');
-  } 
-  
+  }   
 }
 
 function tryConnectPlayer(socket) {
@@ -94,8 +93,13 @@ function readyToPlay(socket) {
   socket.emit('playerReady', playerNumber);
 }
 
-function updateState(state) {
+function updatePlayerTurn() {
+  document.querySelector(CONSTANTS.playerTurn).innerText = `Player Turn: ${clientState.playerTurn + 1}`
+}
+
+function updateGameState(state) {
   clientState = state;
+  updatePlayerTurn();
   console.log('Updating state from the server:', clientState);
 }
 
@@ -107,11 +111,12 @@ function initGame() {
 
     fillGrids(socket);
     placeShips(clientState.ships);
+    updatePlayerTurn();
   });
 
   // listen for any subsequent updates to state from the server
   socket.on('updateState', STATE => {
-    updateState(STATE);
+    updateGameState(STATE);
   });
   
   document.querySelector(CONSTANTS.playerReadyButton)
