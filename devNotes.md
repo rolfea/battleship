@@ -13,14 +13,13 @@
 
 ### DB
 
-[] Set up server with controller for client to use
 [] set up DB and DB communication layer
 
 ## 9/17/2020
 
 I finally have more time to work on this today! I'm going to try to power through a bunch of work. Things will be in a good state if I can finish this all.
 
-### server
+### Server
 
 [x] server sends state to client on ready from both players
 [x] draw initial grids w/ generated ship positions

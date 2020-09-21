@@ -23,18 +23,18 @@ Win Detection
 [x] ship Represented  
 [x] different Sized Ships  
 [x] shot mechanic  
-[] hit vs miss mechanic  
+[x] hit vs miss mechanic  
 [] player Sink Mechanic  
 [] opponent Sink Mechanic  
-[] Win/Loss Display  
-[] Whose Turn Is It (logic/display)  
+[x] Win/Loss Display  
+[x] Whose Turn Is It (logic/display)  
 
 ### Back End
- 
+
 [x] start game  
 [] build random ship placement  
 [] game state table  
-[] win detection
+[x] win detection
 
 ### Bugs/Improvements
 
