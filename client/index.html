@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>Battleship!</title>
   <link rel="stylesheet" href="style.css" type="text/css">
+  <script src="/socket.io/socket.io.js"></script>
   <script src="app.js" charset="UTF-8"></script>
   </head>
   <body>
@@ -14,9 +15,12 @@
     </div>
 
     <div class="game-interface">
-      <div id="start-game">Ready To Start</div>
-      <div id="player-turn"></div> <!-- whose turn is it -->
-      <div id="messages"></div> <!-- messages about game state go here -->
+      <button id="connect">Connect to Server</button>
+      <button id="ready-to-play">Ready to Play</button>
+      <button id="restart">Play Again</button>
+      <p id="player-number">You Are Player</p><br/>
+      <p id="player-turn">Player Turn: </p><br/> <!-- whose turn is it -->
+      <p id="messages"></p> <!-- messages about game state go here -->      
     </div>
 
   </body>
