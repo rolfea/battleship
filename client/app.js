@@ -5,6 +5,8 @@ const CONSTANTS = {
   , playerReadyButton: '#ready-to-play'
   , playerNumberDisplay: '#player-number'
   , playerTurnDisplay: '#player-turn'
+  , hitColor: 'red'
+  , missColor: 'white'
 };
 
 let playerNumber;
@@ -60,16 +62,36 @@ function placeShips(ships) {
        .forEach(ship => placeShip(ship));
 }
 
+function checkForHit(targetId) {
+  // for now let's just check against the clientState
+  // it will be necessary to prevent "cheating" to eventually push to the server
+  // rather than broadcasting them to both players "under the hood"
+  const enemyNumber = playerNumber === 0 ? 1 : 0;
+  let hit;
+  clientState.ships
+    .filter(s => s.playerId === enemyNumber)[0]
+    .shipLocations
+    .forEach(s => s.positions.some(pos => {
+      if (pos === targetId) {
+        hit = true;        
+      }      
+    }));
+
+  return hit;
+}
+
 function attackEnemy(event, socket) {  
   if (clientState.playerTurn === playerNumber) {
-    console.log(`player ${playerNumber} attacks ${event.target.id}!`);
-    // check other player's ship array for hit
-    event.target.style = 'background-color: red';    
-    socket.emit('attack', event.target.id);
-    console.log(clientState);  
-  } else {
-    console.log('not your turn!');
-  }   
+    const targetId = parseInt(event.target.id
+                          .split(`player-${playerNumber}-secondary-grid-`)[1]); 
+    if (checkForHit(targetId)) {
+      event.target.style = `background-color: ${CONSTANTS.hitColor}`;    
+    } else {
+      event.target.style = `background-color: ${CONSTANTS.missColor}`;
+    }
+    
+    socket.emit('attack', targetId);    
+  }     
 }
 
 function tryConnectPlayer(socket) {
@@ -78,7 +100,8 @@ function tryConnectPlayer(socket) {
       console.log('There are already 2 players. Try again later.');
     } else {
       playerNumber = parseInt(num);  
-      document.querySelector(CONSTANTS.playerNumberDisplay).innerText += ` ${playerNumber + 1}`;
+      document.querySelector(CONSTANTS.playerNumberDisplay)
+              .innerText += ` ${playerNumber + 1}`;
     }    
   });
 
@@ -128,7 +151,8 @@ function initGame() {
 }
 
 function main() {
-  document.querySelector(CONSTANTS.playerConnectButton).addEventListener('click', initGame);
+  document.querySelector(CONSTANTS.playerConnectButton)
+          .addEventListener('click', initGame);
 }
 
 window.addEventListener('load', () =>  main());
