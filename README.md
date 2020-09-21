@@ -8,7 +8,19 @@ This is a two player Battleship implementation. Both players have their own brow
 
 ## Try This Out
 
-Setup and Run Instructions Here
+Clone the repository and then navigate to the server directory. Then install dependencies:
+
+```bash
+npm run install
+```
+
+From there you can start the server and navigate to `localhost:8080` in two separate browser windows to play the game. 
+
+```bash
+npm run dev
+```
+
+Click "Connect to Server" in each window, then "Ready to Play" to start the game. Click on the blue grid to attack your opponent. 
 
 ## Features
 
