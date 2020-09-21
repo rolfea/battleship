@@ -5,6 +5,7 @@ const CONSTANTS = {
   , playerReadyButton: '#ready-to-play'
   , playerNumberDisplay: '#player-number'
   , playerTurnDisplay: '#player-turn'
+  , messages: '#messages'
   , hitColor: 'red'
   , missColor: 'white'
 };
@@ -82,15 +83,15 @@ function checkForHit(targetId) {
 
 function attackEnemy(event, socket) {  
   if (clientState.playerTurn === playerNumber) {
-    const targetId = parseInt(event.target.id
-                          .split(`player-${playerNumber}-secondary-grid-`)[1]); 
-    if (checkForHit(targetId)) {
+    const targetId = parseInt(event.target.id.split(`player-${playerNumber}-secondary-grid-`)[1]); 
+    const hit = checkForHit(targetId)
+    if (hit) {
       event.target.style = `background-color: ${CONSTANTS.hitColor}`;    
     } else {
       event.target.style = `background-color: ${CONSTANTS.missColor}`;
     }
     
-    socket.emit('attack', targetId);    
+    socket.emit('attack', targetId, hit);    
   }     
 }
 
@@ -119,13 +120,19 @@ function readyToPlay(socket) {
 }
 
 function updatePlayerTurn() {
-  document.querySelector(CONSTANTS.playerTurnDisplay).innerText = `Player Turn: ${clientState.playerTurn + 1}`
+  document.querySelector(CONSTANTS.playerTurnDisplay)
+          .innerText = `Player Turn: ${clientState.playerTurn + 1}`
 }
 
 function updateGameState(state) {
   clientState = state;
   updatePlayerTurn();
   console.log('Updating state from the server:', clientState);
+}
+
+function finishGame() {
+  document.querySelector(CONSTANTS.messages)
+          .innerText = `Player ${clientState.winner + 1} Wins!`
 }
 
 function initGame() {
@@ -139,9 +146,13 @@ function initGame() {
     updatePlayerTurn();
   });
 
-  // listen for any subsequent updates to state from the server
   socket.on('updateState', STATE => {
     updateGameState(STATE);
+  });
+
+  socket.on('gameOver', STATE => {
+    updateGameState(STATE);
+    finishGame();
   });
   
   document.querySelector(CONSTANTS.playerReadyButton)
