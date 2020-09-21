@@ -5,6 +5,7 @@ const CONSTANTS = {
   , playerReadyButton: '#ready-to-play'
   , playerNumberDisplay: '#player-number'
   , playerTurnDisplay: '#player-turn'
+  , restartButton: '#restart'
   , messages: '#messages'
   , hitColor: 'red'
   , missColor: 'white'
@@ -61,6 +62,10 @@ function placeShip(ship) {
 function placeShips(ships) {
   ships.find(s => s.playerId === playerNumber).shipLocations
        .forEach(ship => placeShip(ship));
+}
+
+function hideRestartButton() {
+  document.querySelector(CONSTANTS.restartButton).style ='visibility: hidden;';
 }
 
 function checkForHit(targetId) {
@@ -133,6 +138,7 @@ function updateGameState(state) {
 function finishGame() {
   document.querySelector(CONSTANTS.messages)
           .innerText = `Player ${clientState.winner + 1} Wins!`
+  let restartButton = document.querySelector(CONSTANTS.restartButton).style = 'visibility: visible;';
 }
 
 function initGame() {
@@ -143,6 +149,7 @@ function initGame() {
 
     fillGrids(socket);
     placeShips(clientState.ships);
+    hideRestartButton();
     updatePlayerTurn();
   });
 

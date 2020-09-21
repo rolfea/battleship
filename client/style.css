@@ -45,3 +45,7 @@
 #player-number { width: 100% }
 
 #player-turn { width: 100% }
+
+#restart {
+  visibility: hidden;
+}
