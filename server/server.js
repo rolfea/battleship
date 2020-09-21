@@ -16,10 +16,11 @@ const io = socketio(server);
 // temporarily handle in memory, but we want to persist this in the DB eventually
 
 let STATE = {
-  winner: false
+  winner: null
   , playerConnections: [null, null]
   , playersReady: [null, null]
   , playerTurn: 0
+  , playerScores: [0, 0]
   , ships: [
     { 
       playerId: 0
@@ -126,8 +127,15 @@ io.on('connection', (socket) => {
     }      
   });
 
-  socket.on('attack', (targetId) => {
+  socket.on('attack', (targetId, hit) => {
     console.log('attack recieved!')
+    if (hit) {
+      STATE.playerScores[STATE.playerTurn]++;
+      if (STATE.playerScores[STATE.playerTurn] === 17) {
+        STATE.winner = STATE.playerTurn;
+        io.emit('gameOver', STATE);
+      }
+    }
     STATE.playerTurn = STATE.playerTurn === 0 ? 1 : 0;
     io.emit('updateState', STATE);
     logState(STATE);
