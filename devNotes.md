@@ -1,5 +1,21 @@
 # Dev Notes
 
+## 9/20/2020
+
+### server
+
+[x] server sends state to client on ready from both players
+[x] draw initial grids w/ generated ship positions
+[x] click board create "attack" and changes player turn
+[x] display hit vs. miss
+[x] win condition logic
+[] restart mechanic
+
+### DB
+
+[] Set up server with controller for client to use
+[] set up DB and DB communication layer
+
 ## 9/17/2020
 
 I finally have more time to work on this today! I'm going to try to power through a bunch of work. Things will be in a good state if I can finish this all.
@@ -8,15 +24,10 @@ I finally have more time to work on this today! I'm going to try to power throug
 
 [x] server sends state to client on ready from both players
 [x] draw initial grids w/ generated ship positions
-[] click board create "attack" and changes player turn
+[x] click board create "attack" and changes player turn
 [] display hit vs. miss
 [] win condition logic
 [] restart mechanic
-
-### DB
-
-[] Set up server with controller for client to use
-[] set up DB and DB communication layer
 
 ## 9/15/2020
 

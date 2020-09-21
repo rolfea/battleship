@@ -30,12 +30,20 @@ Win Detection
 [] Whose Turn Is It (logic/display)  
 
 ### Back End
-
-[] API/Controllers  
-[] start game  
+ 
+[x] start game  
 [] build random ship placement  
 [] game state table  
-[] win detection  
+[] win detection
+
+### Bugs/Improvements
+
+[] 1 Player can connect 2x, locking out a second a player
+[] player can attack an already attacked square. we track "hit squares" on the
+  back end and check onHit if the id has already been submitted to prevent this
+[] need to handle disconnects
+[] notify player when they sink an opponent's ship
+[] win condition is a little rigid, doesn't leave room for additional boats, for example
 
 ### Stretch Goals
 
