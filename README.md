@@ -50,28 +50,31 @@ Win Detection
 
 ### Bugs/Improvements
 
-[] 1 Player can connect 2x, locking out a second a player
+[] a player can connect 2x, locking out a second a player  
 [] player can attack an already attacked square. we track "hit squares" on the
-  back end and check onHit if the id has already been submitted to prevent this
-[] need to handle disconnects
-[] notify player when they sink an opponent's ship
-[] win condition is a little rigid, doesn't leave room for additional boats, for example
+  back end and check onHit if the id has already been submitted to prevent this  
+[] need to handle disconnects  
+[] notify player when they sink an opponent's ship  
+[] win condition is a little rigid, doesn't leave room for additional boats, for example 
+[] hide "Ready to Play" until player has connected 
 
 ### Stretch Goals
 
-* Deploy to AWS (Build, Test, Deploy)
-* Beautiful UI/UX (sounds, colors, effects)
-* Browser Compatibility
-* Responsive Design
+* Deploy to AWS (Build, Test, Deploy)  
+* Containerize  
+* Beautiful UI/UX (sounds, colors, effects)  
+* Browser Compatibility  
+* Responsive Design  
 
 ### Out of Scope (for now)
 
-* Auth
-* Replay
-* General Security (leaving the API open)
-* Custom ship placement
-* Play against computer
-* Player Chat
+* Replay mechanic (reset score to 0, place ships again)  
+* Auth  
+* Replay  
+* General Security (leaving the API open)  
+* Custom ship placement  
+* Play against computer  
+* Player Chat  
 
 ## Reference
 
