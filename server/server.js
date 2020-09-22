@@ -131,7 +131,7 @@ io.on('connection', (socket) => {
     console.log('attack recieved!')
     if (hit) {
       STATE.playerScores[STATE.playerTurn]++;
-      if (STATE.playerScores[STATE.playerTurn] > 17) {
+      if (STATE.playerScores[STATE.playerTurn] >= 17) {
         STATE.winner = STATE.playerTurn;
         io.emit('gameOver', STATE);
       }
